@@ -13,6 +13,8 @@ import {
   Month,
   Resize,
   ScheduleComponent,
+  ResourcesDirective,
+  ResourceDirective,
   ViewDirective,
   ViewsDirective,
   Week,
@@ -20,6 +22,7 @@ import {
   type NavigatingEventArgs,
   type PopupOpenEventArgs,
   type EJ2Instance,
+  type ResourceDetails,
 } from '@syncfusion/ej2-react-schedule';
 import { TextBoxComponent } from '@syncfusion/ej2-react-inputs';
 import {
@@ -80,6 +83,18 @@ const App = (): JSX.Element => {
     dialogRef.height = 576;
     dialogRef.width = 848;
     dialogRef.dataBind();
+  };
+
+  const resourceHeaderTemplate = (data: ResourceDetails): JSX.Element => {
+    if (String(data.resourceData.ClassName).endsWith('e-child-node')) {
+      return (
+        <ButtonComponent cssClass="e-flat" iconCss="e-icons e-plus">
+          {data.resourceData.text}
+        </ButtonComponent>
+      );
+    } else {
+      return <div className="e-resource-text">{data.resourceData.text}</div>;
+    }
   };
 
   const editorTemplate = (data: Record<string, any>): JSX.Element => {
@@ -172,8 +187,63 @@ const App = (): JSX.Element => {
               <CheckBoxComponent cssClass="e-field" label="All day" />
             </div>
           </div>
-          <div className="flex-row">
-            <ScheduleComponent showHeaderBar={false}>
+          <div className="flex-full-row">
+            <ScheduleComponent
+              showHeaderBar={false}
+              showTimeIndicator={false}
+              height={300}
+              group={{ resources: ['Required', 'Optional'] }}
+              resourceHeaderTemplate={resourceHeaderTemplate}>
+              <ResourcesDirective>
+                <ResourceDirective
+                  field="requiredId"
+                  title="Required Attendees"
+                  name="Required"
+                  idField="id"
+                  textField="text"
+                  colorField="color"
+                  allowMultiple={true}
+                  expandedField="expanded"
+                  dataSource={[
+                    {
+                      id: 1,
+                      text: 'Required Attendees',
+                      color: '#cb6bb2',
+                      expanded: true,
+                    },
+                    {
+                      id: 2,
+                      text: 'Optional Attendees',
+                      color: '#56ca85',
+                      expanded: false,
+                    },
+                  ]}
+                />
+                <ResourceDirective
+                  field="optionalId"
+                  title="Optional Attendees"
+                  name="Optional"
+                  idField="id"
+                  groupIDField="groupId"
+                  textField="text"
+                  colorField="color"
+                  allowMultiple={true}
+                  dataSource={[
+                    {
+                      id: 1,
+                      groupId: 1,
+                      text: 'Add required attendees',
+                      color: '#cb6bb2',
+                    },
+                    {
+                      id: 2,
+                      groupId: 2,
+                      text: 'Add optional attendees',
+                      color: '#56ca85',
+                    },
+                  ]}
+                />
+              </ResourcesDirective>
               <ViewsDirective>
                 <ViewDirective option="TimelineDay" />
               </ViewsDirective>
