@@ -98,7 +98,6 @@ $purple-color: #834a84;
 }
 
 .e-schedule-dialog {
-
   .e-dlg-content {
     background-color: $white-color;
     border-top: 1px solid $border-color;
@@ -136,8 +135,19 @@ $purple-color: #834a84;
           }
         }
 
-        &.row-container .flex-col:last-child {
-          width: 65%;
+        &.row-container {
+          padding: 0;
+
+          .flex-col:last-child {
+            width: 65%;
+          }
+        }
+      }
+
+      .e-schedule {
+        .e-resource-text.child-node {
+          color: $orange-color;
+          cursor: pointer;
         }
       }
     }

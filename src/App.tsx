@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './App.scss';
-import { Internationalization, isNullOrUndefined } from '@syncfusion/ej2-base';
+import { Internationalization } from '@syncfusion/ej2-base';
 import { type Dialog } from '@syncfusion/ej2-popups';
 import {
   ButtonComponent,
   CheckBoxComponent,
 } from '@syncfusion/ej2-react-buttons';
+import {
+  DatePickerComponent,
+  TimePickerComponent,
+} from '@syncfusion/ej2-react-calendars';
+import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
+import { TextBoxComponent } from '@syncfusion/ej2-react-inputs';
+import {
+  RichTextEditorComponent,
+  HtmlEditor,
+  Toolbar,
+  QuickToolbar,
+} from '@syncfusion/ej2-react-richtexteditor';
 import {
   Day,
   DragAndDrop,
@@ -24,20 +36,9 @@ import {
   type EJ2Instance,
   type ResourceDetails,
 } from '@syncfusion/ej2-react-schedule';
-import { TextBoxComponent } from '@syncfusion/ej2-react-inputs';
-import {
-  EmojiPicker,
-  RichTextEditorComponent,
-  HtmlEditor,
-  Toolbar,
-} from '@syncfusion/ej2-react-richtexteditor';
-import {
-  DatePickerComponent,
-  TimePickerComponent,
-} from '@syncfusion/ej2-react-calendars';
-import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 
-const App = (): JSX.Element => {
+const App = (): React.JSX.Element => {
+  const scheduleRef = useRef<ScheduleComponent>(null);
   const intl = new Internationalization();
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [isSidebarOpen, setSidebarState] = useState<boolean>(false);
@@ -63,6 +64,34 @@ const App = (): JSX.Element => {
       'Redo',
     ],
   };
+  const requiredData: Array<Record<string, any>> = [
+    {
+      id: 1,
+      text: 'Required Attendees',
+      color: '#cb6bb2',
+      expanded: true,
+    },
+    {
+      id: 2,
+      text: 'Optional Attendees',
+      color: '#56ca85',
+      expanded: false,
+    },
+  ];
+  const optionalData: Array<Record<string, any>> = [
+    {
+      id: 1,
+      groupId: 1,
+      text: 'Add required attendees',
+      color: '#cb6bb2',
+    },
+    {
+      id: 2,
+      groupId: 2,
+      text: 'Add optional attendees',
+      color: '#56ca85',
+    },
+  ];
 
   const openSidebar = (): void => {
     setSidebarState(true);
@@ -73,8 +102,16 @@ const App = (): JSX.Element => {
   };
 
   const dateNavigation = (args: NavigatingEventArgs): void => {
-    args.cancel = true;
     setCurrentDate(args.currentDate as Date);
+  };
+
+  const openEditor = (): void => {
+    const editorData = {
+      StartTime: new Date(),
+      EndTime: new Date(),
+      IsAllDay: true,
+    };
+    scheduleRef.current?.openEditor(editorData, 'Add', false);
   };
 
   const openPopup = (args: PopupOpenEventArgs): void => {
@@ -85,176 +122,139 @@ const App = (): JSX.Element => {
     dialogRef.dataBind();
   };
 
-  const resourceHeaderTemplate = (data: ResourceDetails): JSX.Element => {
+  const resourceHeaderTemplate = (data: ResourceDetails): React.JSX.Element => {
     if (String(data.resourceData.ClassName).endsWith('e-child-node')) {
       return (
-        <ButtonComponent cssClass="e-flat" iconCss="e-icons e-plus">
-          {data.resourceData.text}
-        </ButtonComponent>
+        <div className="e-resource-text child-node">
+          + {data.resourceData.text}
+        </div>
       );
     } else {
       return <div className="e-resource-text">{data.resourceData.text}</div>;
     }
   };
 
-  const editorTemplate = (data: Record<string, any>): JSX.Element => {
-    if (!isNullOrUndefined(data)) {
-      return (
-        <div className="custom-editor">
-          <div className="flex-row">
-            <TextBoxComponent
-              cssClass="e-field"
-              placeholder="Title"
-              floatLabelType="Always"
-            />
+  const editorTemplate = (data: Record<string, any>): React.JSX.Element => {
+    return (
+      <div className="custom-editor">
+        <div className="flex-row">
+          <TextBoxComponent placeholder="Title" floatLabelType="Always" />
+          <DropDownListComponent
+            placeholder="Location"
+            floatLabelType="Always"
+            popupHeight={160}
+          />
+        </div>
+        <div className="flex-row">
+          <TextBoxComponent
+            placeholder="Invite Required Attendees"
+            floatLabelType="Always"
+          />
+        </div>
+        <div className="flex-row">
+          <div className="flex-col">
+            <div className="flex-row row-container">
+              <div className="flex-col">
+                <div className="field-label e-css">Start Date</div>
+                <DatePickerComponent value={data.StartTime} />
+              </div>
+              <div className="flex-col">
+                <div className="field-label e-css">Start Time</div>
+                <TimePickerComponent value={data.StartTime} />
+              </div>
+            </div>
+          </div>
+          <div className="flex-col">
+            <CheckBoxComponent label="All day" checked={data.IsAllDay} />
+          </div>
+        </div>
+        <div className="flex-row">
+          <div className="flex-col">
+            <div className="flex-row row-container">
+              <div className="flex-col">
+                <div className="field-label e-css">End Date</div>
+                <DatePickerComponent value={data.EndTime} />
+              </div>
+              <div className="flex-col">
+                <div className="field-label e-css">End Time</div>
+                <TimePickerComponent value={data.EndTime} />
+              </div>
+            </div>
+          </div>
+          <div className="flex-col">
             <DropDownListComponent
-              cssClass="e-field"
-              placeholder="Location"
+              placeholder="Repeat at"
               floatLabelType="Always"
               popupHeight={160}
             />
           </div>
-          <div className="flex-row">
-            <TextBoxComponent
-              cssClass="e-field"
-              placeholder="Invite Required Attendees"
-              floatLabelType="Always"
-            />
-          </div>
-          <div className="flex-row">
-            <div className="flex-col">
-              <div className="flex-row row-container">
-                <div className="flex-col">
-                  <div className="field-label e-css">Start Date</div>
-                  <DatePickerComponent />
-                </div>
-                <div className="flex-col">
-                  <div className="field-label e-css">Start Time</div>
-                  <TimePickerComponent />
-                </div>
-              </div>
-            </div>
-            <div className="flex-col">
-              <CheckBoxComponent cssClass="e-field" label="All day" />
-            </div>
-          </div>
-          <div className="flex-row">
-            <div className="flex-col">
-              <div className="flex-row row-container">
-                <div className="flex-col">
-                  <div className="field-label e-css">End Date</div>
-                  <DatePickerComponent />
-                </div>
-                <div className="flex-col">
-                  <div className="field-label e-css">End Time</div>
-                  <TimePickerComponent />
-                </div>
-              </div>
-            </div>
-            <div className="flex-col">
-              <DropDownListComponent
-                cssClass="e-field"
-                placeholder="Repeat at"
-                floatLabelType="Always"
-                popupHeight={160}
-              />
-            </div>
-          </div>
-          <div className="flex-row">
-            <div className="flex-col">
-              <div className="field-label e-css">Description</div>
-              <RichTextEditorComponent
-                height={160}
-                toolbarSettings={toolbarSettings}>
-                <Inject services={[Toolbar, EmojiPicker, HtmlEditor]} />
-              </RichTextEditorComponent>
-            </div>
-          </div>
-          <div className="flex-row">
-            <div className="flex-col flex-col-auto">
-              <div className="field-label e-css">Start Date</div>
-              <DatePickerComponent width={200} />
-            </div>
-            <div className="flex-col flex-col-auto">
-              <div className="field-label e-css">Start Time</div>
-              <TimePickerComponent width={100} />
-            </div>
-            <div className="flex-col flex-col-auto">
-              <div className="field-label e-css">End Time</div>
-              <TimePickerComponent width={100} />
-            </div>
-            <div className="flex-col">
-              <CheckBoxComponent cssClass="e-field" label="All day" />
-            </div>
-          </div>
-          <div className="flex-full-row">
-            <ScheduleComponent
-              showHeaderBar={false}
-              showTimeIndicator={false}
-              height={300}
-              group={{ resources: ['Required', 'Optional'] }}
-              resourceHeaderTemplate={resourceHeaderTemplate}>
-              <ResourcesDirective>
-                <ResourceDirective
-                  field="requiredId"
-                  title="Required Attendees"
-                  name="Required"
-                  idField="id"
-                  textField="text"
-                  colorField="color"
-                  allowMultiple={true}
-                  expandedField="expanded"
-                  dataSource={[
-                    {
-                      id: 1,
-                      text: 'Required Attendees',
-                      color: '#cb6bb2',
-                      expanded: true,
-                    },
-                    {
-                      id: 2,
-                      text: 'Optional Attendees',
-                      color: '#56ca85',
-                      expanded: false,
-                    },
-                  ]}
-                />
-                <ResourceDirective
-                  field="optionalId"
-                  title="Optional Attendees"
-                  name="Optional"
-                  idField="id"
-                  groupIDField="groupId"
-                  textField="text"
-                  colorField="color"
-                  allowMultiple={true}
-                  dataSource={[
-                    {
-                      id: 1,
-                      groupId: 1,
-                      text: 'Add required attendees',
-                      color: '#cb6bb2',
-                    },
-                    {
-                      id: 2,
-                      groupId: 2,
-                      text: 'Add optional attendees',
-                      color: '#56ca85',
-                    },
-                  ]}
-                />
-              </ResourcesDirective>
-              <ViewsDirective>
-                <ViewDirective option="TimelineDay" />
-              </ViewsDirective>
-              <Inject services={[TimelineViews]} />
-            </ScheduleComponent>
+        </div>
+        <div className="flex-row">
+          <div className="flex-col">
+            <div className="field-label e-css">Description</div>
+            <RichTextEditorComponent
+              height={160}
+              toolbarSettings={toolbarSettings}>
+              <Inject services={[HtmlEditor, QuickToolbar, Toolbar]} />
+            </RichTextEditorComponent>
           </div>
         </div>
-      );
-    } else {
-      return <div></div>;
-    }
+        <div className="flex-row">
+          <div className="flex-col flex-col-auto">
+            <div className="field-label e-css">Start Date</div>
+            <DatePickerComponent value={data.StartTime} width={200} />
+          </div>
+          <div className="flex-col flex-col-auto">
+            <div className="field-label e-css">Start Time</div>
+            <TimePickerComponent value={data.StartTime} width={140} />
+          </div>
+          <div className="flex-col flex-col-auto">
+            <div className="field-label e-css">End Time</div>
+            <TimePickerComponent value={data.EndTime} width={140} />
+          </div>
+          <div className="flex-col">
+            <CheckBoxComponent label="All day" checked={data.IsAllDay} />
+          </div>
+        </div>
+        <div className="flex-full-row">
+          <ScheduleComponent
+            showHeaderBar={false}
+            showTimeIndicator={false}
+            height={300}
+            group={{ resources: ['Required', 'Optional'] }}
+            resourceHeaderTemplate={resourceHeaderTemplate}>
+            <ResourcesDirective>
+              <ResourceDirective
+                field="requiredId"
+                title="Required Attendees"
+                name="Required"
+                idField="id"
+                textField="text"
+                colorField="color"
+                allowMultiple={true}
+                expandedField="expanded"
+                dataSource={requiredData}
+              />
+              <ResourceDirective
+                field="optionalId"
+                title="Optional Attendees"
+                name="Optional"
+                idField="id"
+                groupIDField="groupId"
+                textField="text"
+                colorField="color"
+                allowMultiple={true}
+                dataSource={optionalData}
+              />
+            </ResourcesDirective>
+            <ViewsDirective>
+              <ViewDirective option="TimelineDay" />
+            </ViewsDirective>
+            <Inject services={[TimelineViews]} />
+          </ScheduleComponent>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -265,7 +265,10 @@ const App = (): JSX.Element => {
           <span className="title-2">Rooms</span>
         </div>
         <div className="header-options">
-          <ButtonComponent cssClass="e-primary" iconCss="e-icons e-plus">
+          <ButtonComponent
+            cssClass="e-primary"
+            iconCss="e-icons e-plus"
+            onClick={openEditor}>
             New Event
           </ButtonComponent>
           <div className="e-avatar e-avatar-small e-avatar-circle"></div>
@@ -273,6 +276,7 @@ const App = (): JSX.Element => {
       </header>
       <main>
         <ScheduleComponent
+          ref={scheduleRef}
           height="100%"
           width="100%"
           currentView="Month"
