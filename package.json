@@ -1,6 +1,19 @@
 {
   "name": "ej2-react-scheduling-assistant",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "Essential JS 2 for React - Scheduling Assistant application",
+  "author": "Syncfusion Inc.",
+  "license": "SEE LICENSE IN license",
+  "keywords": [
+    "ej2",
+    "samples",
+    "syncfusion",
+    "ej2-samples",
+    "scheduling-assistant",
+    "ej2-scheduling-assistant",
+    "ej2-showcase-samples",
+    "syncfusion-samples"
+  ],
   "private": true,
   "dependencies": {
     "@syncfusion/ej2-react-buttons": "*",
@@ -11,6 +24,7 @@
     "@syncfusion/ej2-react-schedule": "*"
   },
   "devDependencies": {
+    "@syncfusion/ej2-showcase-helper": "*",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -44,7 +58,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "stylelint \"src/**/*.{css,scss}\" && eslint src/**/*.{js,jsx,ts,tsx}",
-    "lint:fix": "stylelint \"src/**/*.{css,scss}\" --fix && eslint src/**/*.{js,jsx,ts,tsx} --fix"
+    "lint:fix": "stylelint \"src/**/*.{css,scss}\" --fix && eslint src/**/*.{js,jsx,ts,tsx} --fix",
+    "ci-publish": "gulp publish-sample"
   },
   "browserslist": {
     "production": [
