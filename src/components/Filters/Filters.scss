@@ -1,0 +1,61 @@
+@import '@syncfusion/ej2-base/styles/tailwind.css';
+@import '@syncfusion/ej2-buttons/styles/tailwind.css';
+@import '@syncfusion/ej2-popups/styles/tailwind.css';
+@import '@syncfusion/ej2-navigations/styles/tailwind.css';
+@import "@syncfusion/ej2-inputs/styles/tailwind.css";
+
+.e-accordion.app-filters {
+    border: 0;
+}
+
+.e-checkbox-wrapper .e-icons.e-frame {
+    border-radius: 6px;
+    border-color: #CED4DA;
+}
+
+.floor-filter .room-availability {
+    align-items: center;
+    border-radius: 48px;
+    display: inline-flex;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    gap: 10px;
+    justify-content: center;
+    line-height: 18px;
+    padding: 0px 8px;
+    text-transform: capitalize;
+}
+
+.floor-filter .room-availability.avail {
+    background: #ECFDF5;
+    color: #10B981;
+}
+
+.floor-filter .room-availability.full {
+    background: #FEF2F2;
+    color: #DC2626;
+}
+
+.slider-price {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.checkbox-filter-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.checkbox-filter-container .floor-filter {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.price-filter-container {
+    margin: 0 auto;
+    width: 90%;
+}

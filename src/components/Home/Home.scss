@@ -1,0 +1,70 @@
+@import "@syncfusion/ej2-base/styles/tailwind.css";
+@import "@syncfusion/ej2-navigations/styles/tailwind.css";
+
+.app-main-container {
+    background: #e6eaed;
+    display: block;
+    height: 100vh;
+    width: 100vw;
+}
+
+.app-main-container .e-appbar.app-header {
+    border-bottom: 1px solid #E0F2FE !important;
+    box-shadow: none;
+    height: 56px;
+    padding: 16px 32px;
+}
+
+.app-main-container .e-appbar.app-header .avatar-container {
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.app-main-container .e-appbar.app-header .avatar-container .avatar-image {
+    height: 24px;
+    width: 24px;
+}
+
+.main-container {
+    display: flex;
+    height: calc(100% - 56px);
+    width: 100%;
+}
+
+.main-container .sidebar-container {
+    width: 292px;
+}
+
+.main-container .content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px 24px 0;
+    width: 100%;
+}
+
+.main-container .content-container .header-container {
+    align-items: center;
+    display: flex;
+    height: 54px;
+    justify-content: space-between;
+}
+
+.main-container .content-container .schedule-container {
+    align-items: center;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 80px);
+    justify-content: center;
+}
+
+.main-container .content-container .schedule-container .no-schedule {
+    align-items: center;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-content: center;
+}

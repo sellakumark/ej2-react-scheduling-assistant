@@ -24,9 +24,11 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": [
-    "react",
-    "prettier"
-  ],
-  "rules": {}
+  "plugins": ["react", "prettier"],
+  "rules": {
+    "@typescript-eslint/restrict-plus-operands": "off",
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "react/display-name": "off",
+    "react/no-children-prop": "off"
+  }
 }

@@ -1,0 +1,38 @@
+@import "@syncfusion/ej2-base/styles/tailwind.css";
+@import "@syncfusion/ej2-buttons/styles/tailwind.css";
+@import "@syncfusion/ej2-calendars/styles/tailwind.css";
+
+.e-calendar.app-calendar {
+    border: 0;
+    box-shadow: none;
+}
+
+.e-calendar.app-calendar .e-footer-container {
+    display: none;
+}
+
+.e-calendar.app-calendar .e-content.e-month .e-cell.available {
+    background-color: #ECFDF5;
+    color: #10B981;
+}
+
+.e-calendar.app-calendar .e-content.e-month .e-cell.almost-full.e-selected,
+.e-calendar.app-calendar .e-content.e-month .e-cell.e-cell.available.e-selected {
+    color: #fff !important;
+}
+
+.e-calendar.app-calendar .e-content.e-month .e-cell.almost-full {
+    background-color: #FFF7ED;
+    color: #F97316;
+}
+
+.e-calendar.app-calendar .e-content.e-month .e-cell.not-available {
+    background-color: #FEF2F2;
+    color: #DC2626;
+}
+
+.e-calendar.app-calendar .e-content.e-month .e-cell span,
+.e-calendar.app-calendar .e-content.e-month .e-cell.available span,
+.e-calendar.app-calendar .e-content.e-month .e-cell.almost-full span {
+    color: inherit;
+}
